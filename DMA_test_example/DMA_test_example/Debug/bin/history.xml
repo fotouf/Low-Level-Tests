@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=DMA_test_example.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\DMA_test_example -TC:\CooCox\CoIDE\configuration\ProgramData\DMA_test_example/arm-gcc-link.ld -g">
+      <target file="DMA_test_example.elf" lastModified="13ef0c4432c">
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="13ef0c43e71"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="13ef0c43eb3"/>
+         <source file="..\obj\main.o" lastModified="13ef0c43f1b"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="13ef0c43fa2"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="13ef0c44009"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="13ef0c44067"/>
+         <source file="..\obj\stm32f4xx_dma.o" lastModified="13ef0c440d8"/>
+      </target>
+   </processor>
+</history>
