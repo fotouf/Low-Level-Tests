@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <history>
    <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=DMA_Usart_TheTest.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\DMA_Usart_TheTest -TC:\CooCox\CoIDE\configuration\ProgramData\DMA_Usart_TheTest/arm-gcc-link.ld -g">
-      <target file="DMA_Usart_TheTest.elf" lastModified="13edc1c4e5d">
-         <source file="..\obj\stm32f4xx_usart.o" lastModified="13edc1c4537"/>
-         <source file="..\obj\startup_stm32f4xx.o" lastModified="13edc1c4595"/>
-         <source file="..\obj\main.o" lastModified="13edc1c4606"/>
-         <source file="..\obj\stm32f4xx_rcc.o" lastModified="13edc1c468f"/>
-         <source file="..\obj\stm32f4xx_gpio.o" lastModified="13edc1c46f5"/>
-         <source file="..\obj\system_stm32f4xx.o" lastModified="13edc1c474d"/>
-         <source file="..\obj\stm32f4xx_dma.o" lastModified="13edc1c47b9"/>
-         <source file="..\obj\misc.o" lastModified="13edc1c485b"/>
+      <target file="DMA_Usart_TheTest.elf" lastModified="13ef0d6b876">
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="13ef0d6b380"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="13ef0d6b3c6"/>
+         <source file="..\obj\main.o" lastModified="13ef0d6b42c"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="13ef0d6b4b5"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="13ef0d6b51e"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="13ef0d6b576"/>
+         <source file="..\obj\stm32f4xx_dma.o" lastModified="13ef0d6b5e3"/>
+         <source file="..\obj\misc.o" lastModified="13ef0d6b63a"/>
       </target>
    </processor>
 </history>
