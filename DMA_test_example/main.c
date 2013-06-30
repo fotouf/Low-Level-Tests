@@ -14,7 +14,6 @@
 
 #include "main.h"
 
-
 /* Private typedef -----------------------------------------------------------*/
 DMA_InitTypeDef  DMA_InitStructure;
 typedef enum
