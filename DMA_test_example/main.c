@@ -84,11 +84,10 @@ void Delay(__IO uint32_t nCount);
 unsigned short calcCRC(unsigned char *pBuffer, unsigned short bufferSize);
 
 
-/**
-  * @brief  Main program
-  * @param  None
-  * @retval None
-  */
+/****************************************************************/
+/*						Main program							*/
+/****************************************************************/
+
 int main(void)
 {
 	/*----------------------System Clock configuration-----------------------*/
@@ -134,7 +133,7 @@ static void USART_Config(void)
   /* Enable GPIO clock */
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
   /* Enable USART clock */
-  USARTx_CLK_INIT(RCC_APB1Periph_USART3, ENABLE);
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
   /* Enable the DMA clock */
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
 
@@ -150,10 +149,10 @@ static void USART_Config(void)
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
 
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;				//Tx
-  GPIO_Init(USARTx_TX_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_Init(GPIOD, &GPIO_InitStructure);
 
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;				//Rx
-  GPIO_Init(USARTx_RX_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_Init(GPIOD, &GPIO_InitStructure);
 
   /*-------------- USART3 configuration ------------------------*/
 
@@ -171,7 +170,7 @@ static void USART_Config(void)
   USART_InitStructure.USART_Parity = USART_Parity_No;
   USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-  USART_Init(USARTx, &USART_InitStructure);
+  USART_Init(USART3, &USART_InitStructure);
 
   /* -----------DMA controller to manage USART TX and RX DMA request ----------*/
 
@@ -182,7 +181,7 @@ static void USART_Config(void)
   DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
   DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
   DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-  DMA_InitStructure.DMA_PeripheralBaseAddr =(uint32_t) (&(USARTx->DR)) ;
+  DMA_InitStructure.DMA_PeripheralBaseAddr =(uint32_t) (&(USART3->DR)) ;
   DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
   DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
   DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
@@ -210,9 +209,9 @@ static void USART_Config(void)
   USART_ClearITPendingBit(USART3,USART_IT_RXNE);
 
   /* Enable USART */
-  USART_Cmd(USARTx, ENABLE);
+  USART_Cmd(USART3, ENABLE);
 
-//  //USART_ITConfig(USART3,USART_IT_TC,ENABLE);
+  //USART_ITConfig(USART3,USART_IT_TC,ENABLE);
   USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
 
 }
@@ -269,7 +268,7 @@ void SendMsgIMU(unsigned short DataNumber,uint8_t *StartAdress)
     /*------------Clear flags and disable DMA for TX to enable it later--------*/
     USART_ClearFlag(USART3,USART_FLAG_TC);
     DMA_ClearFlag(DMA1_Stream3,DMA_FLAG_TCIF3);
-    USART_DMACmd(USARTx, USART_DMAReq_Tx, DISABLE);
+    USART_DMACmd(USART3, USART_DMAReq_Tx, DISABLE);
 }
 
 
@@ -321,7 +320,7 @@ unsigned short calcCRC(unsigned char *pBuffer, unsigned short bufferSize)
 
 
 /****************************************************************************/
-/* Description: USART3_RX_Irq_Handler () 									*/
+/* Description: USART3_IRQHandler() 									*/
 /* Function: Interrupt routine for USART3 / IMU receive handler			    */
 /*							Simple Version									*/
 /****************************************************************************/
@@ -332,7 +331,7 @@ void USART3_IRQHandler(void)
 	led_on(yellow);
 
 	/*checking if we get messages more than one time*/
-//	USART_ClearFlag(USARTx,USART_FLAG_RXNE);
+//	USART_ClearFlag(USART3,USART_FLAG_RXNE);
 //	counter = counter + 1;
 //	if (counter==7){led_on(green2);}
 
