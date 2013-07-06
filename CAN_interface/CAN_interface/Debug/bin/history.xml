@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=CAN_interface.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\CAN_interface -TC:\CooCox\CoIDE\configuration\ProgramData\CAN_interface/arm-gcc-link.ld -g">
+      <target file="CAN_interface.elf" lastModified="13fb3d65bf9">
+         <source file="..\obj\EPOS.o" lastModified="13fb3d655bc"/>
+         <source file="..\obj\LEDS.o" lastModified="13fb3d65619"/>
+         <source file="..\obj\CAN.o" lastModified="13fb3d656fb"/>
+         <source file="..\obj\stm32f4xx_can.o" lastModified="13fb3d6578e"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="13fb3d657db"/>
+         <source file="..\obj\main.o" lastModified="13fb3d6583f"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="13fb3d658c1"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="13fb3d65925"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="13fb3d6597a"/>
+         <source file="..\obj\misc.o" lastModified="13fb3d659ce"/>
+      </target>
+   </processor>
+</history>
