@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m4 -mthumb -Wall -ffunction-sections -g -O0 -c -DSTM32F407ZG -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -I..\..\..\workspace\Playing_around_with_the_LCD\cmsis -I..\..\..\workspace\Playing_around_with_the_LCD\cmsis_boot -I..\..\..\workspace\Playing_around_with_the_LCD\cmsis_lib -I..\..\..\workspace -I..\..\..\workspace\Playing_around_with_the_LCD -I..\..\..\workspace\Playing_around_with_the_LCD\cmsis_lib\include -I..\..\..">
+      <target file="stm32f4xx_tim.o" lastModified="141a4bc98f7">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_tim.c" lastModified="141a3aa8263"/>
+      </target>
+      <target file="stm32f4xx_rcc.o" lastModified="141a4bc955c">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_rcc.c" lastModified="141a39a7428"/>
+      </target>
+      <target file="system_stm32f4xx.o" lastModified="141a4bc978e">
+         <source file="..\..\..\cmsis_boot\system_stm32f4xx.c" lastModified="141a39a7501"/>
+      </target>
+      <target file="stm32f4xx_dma.o" lastModified="141a4bc9809">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_dma.c" lastModified="141a3b60753"/>
+      </target>
+      <target file="stm32f4xx_gpio.o" lastModified="141a4bc973a">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_gpio.c" lastModified="141a39a78a4"/>
+      </target>
+      <target file="startup_stm32f4xx.o" lastModified="141a4bc9321">
+         <source file="..\..\..\cmsis_boot\startup\startup_stm32f4xx.c" lastModified="141a39a748c"/>
+      </target>
+   </processor>
+</history>

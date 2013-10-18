@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=Usart6_testing.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\Usart6_testing -TC:\CooCox\CoIDE\configuration\ProgramData\Usart6_testing/arm-gcc-link.ld -g">
+      <target file="Usart6_testing.elf" lastModified="1417f9d0227">
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="1417f9cfdbb"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="1417f9cfdf1"/>
+         <source file="..\obj\main.o" lastModified="1417f9cfe61"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="1417f9cfed9"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="1417f9cff33"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="1417f9cff7f"/>
+         <source file="..\obj\stm32f4xx_dma.o" lastModified="1417f9cffde"/>
+         <source file="..\obj\misc.o" lastModified="1417f9d0024"/>
+      </target>
+   </processor>
+</history>
