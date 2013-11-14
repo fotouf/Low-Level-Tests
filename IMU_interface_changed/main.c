@@ -196,10 +196,12 @@ void USART_Config(void)
   DMA_Init(DMA1_Stream1,&DMA_InitStructure);
 
 
+  //------------ USART interrupt handler settings (NOT USED ANYMORE)--------------------------//
   NVIC_InitStruct.NVIC_IRQChannel = USART3_IRQn;		//IMU interrupt handler
   NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
   NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 13;
   NVIC_Init(&NVIC_InitStruct);
+  //----------------------------------------------------------------------------------------//
 
   USART_ClearITPendingBit(USART3,USART_IT_TC);				//Clear possible pending interrupts
   USART_ClearITPendingBit(USART3,USART_IT_RXNE);
@@ -207,7 +209,6 @@ void USART_Config(void)
   /* Enable USART */
   USART_Cmd(USART3, ENABLE);
 
-  USART_ITConfig(USART3,USART_IT_RXNE,DISABLE);
 
 
   //-------------Receiving DMA interrupt settings------------------------------------------------//
@@ -282,7 +283,7 @@ void SendMsgIMU(unsigned short DataNumber,uint8_t *StartAdress)
     DMA_SetCurrDataCounter(DMA1_Stream3, DataNumber + 8);
 
 	DMA_Cmd(DMA1_Stream3,ENABLE);
-	while(DMA_GetCmdStatus(DMA1_Stream3) != ENABLE){toggle_led(green1);}
+	while(DMA_GetCmdStatus(DMA1_Stream3) != ENABLE);
 
 	USART_DMACmd(USART3,USART_DMAReq_Tx,ENABLE);
 
@@ -519,7 +520,7 @@ void DMA1_Stream3_IRQHandler(void)
 
 	/* It is already disabled but just to be sure*/
 	DMA_Cmd(DMA1_Stream3,DISABLE);
-	while(DMA_GetCmdStatus(DMA1_Stream3) != DISABLE){toggle_led(green1);}
+	while(DMA_GetCmdStatus(DMA1_Stream3) != DISABLE);
 
 	DMA_ClearFlag(DMA1_Stream3,DMA_FLAG_TCIF3);
 
@@ -541,41 +542,15 @@ void DMA1_Stream1_IRQHandler(void)
 {
 
 
-					//NOTE: When transmission complete, the DMA stream is disabled! In NORMAL mode: No DMA request is served unless the software re-programs the stream and re-enables it!!
-					//			In Circular Mode: It is never disabled, so in order to change the data counter you should disable it amd re- enable it.
+	//NOTE: When transmission complete, the DMA stream is disabled! In NORMAL mode: No DMA request is served unless the software re-programs the stream and re-enables it!!
+	//			In Circular Mode: It is never disabled, so in order to change the data counter you should disable it amd re- enable it.
 
     /*---------------------------------------------------------------------------------------*/
 	static unsigned int state1=0;
-    unsigned int i;
-    unsigned short lenght;
-    unsigned short crc;
-    char *qW_ptr = (char*)&Sensor_val.qW, *qX_ptr = (char*)&Sensor_val.qX, *qY_ptr = (char*)&Sensor_val.qY, *qZ_ptr = (char*)&Sensor_val.qZ;
-    char *Gx_ptr = (char*)&Sensor_val.gyro_x, *Gy_ptr = (char*)&Sensor_val.gyro_y, *Gz_ptr = (char*)&Sensor_val.gyro_z;
-    char *eulx_ptr = (char*)&Sensor_val.theta_x, *euly_ptr = (char*)&Sensor_val.theta_y, *eulz_ptr = (char*)&Sensor_val.theta_z;
-    char *p_acc_x = (char*)&Sensor_val.acc_x;
-    char *p_acc_y = (char*)&Sensor_val.acc_y;
-    char *p_acc_z = (char*)&Sensor_val.acc_z;
+	int shift;
 
-
-//    USART_DMACmd(USART3, USART_DMAReq_Rx, DISABLE);
-
-
-
-//    USART_DMACmd(USART3, USART_DMAReq_Rx, ENABLE);
-
-
-//    i=0;
-//    while(i<(120-1))
-//    {
-//    	if ((RxMessageIMU[i]==0xff)&&(RxMessageIMU[i+1]==0x02))
-//    	{
-//    		led_off(green1);
-//    	}
-//    	i++;
-//    }
-//
-    DMA_Cmd(DMA1_Stream1,DISABLE);
-        while(DMA_GetCmdStatus(DMA1_Stream1) != DISABLE);
+	DMA_Cmd(DMA1_Stream1,DISABLE);
+	while(DMA_GetCmdStatus(DMA1_Stream1) != DISABLE);
 
 
 
@@ -587,8 +562,6 @@ void DMA1_Stream1_IRQHandler(void)
 		   state1=1;
 	   }
 	   DMA_SetCurrDataCounter(DMA1_Stream1, 1);
-	   DMA_Cmd(DMA1_Stream1,ENABLE);
-	   while(DMA_GetCmdStatus(DMA1_Stream1) != ENABLE);
 	   break;
 
    case 1:
@@ -596,31 +569,27 @@ void DMA1_Stream1_IRQHandler(void)
 	   {
 		   state1=2;
 		   DMA_SetCurrDataCounter(DMA1_Stream1, 58);
-		   DMA_Cmd(DMA1_Stream1,ENABLE);
-		          while(DMA_GetCmdStatus(DMA1_Stream1) != ENABLE);
 	   }
 	   else
 	   {
 		   state1=0;
 		   DMA_SetCurrDataCounter(DMA1_Stream1, 1);
-		   DMA_Cmd(DMA1_Stream1,ENABLE);
-		          while(DMA_GetCmdStatus(DMA1_Stream1) != ENABLE);
 	   }
 	   break;
+
    case 2:
+	   shift = 2;
+	   Read_data(shift);
 	   DMA_SetCurrDataCounter(DMA1_Stream1, 60);
-	   DMA_Cmd(DMA1_Stream1,ENABLE);
-	          while(DMA_GetCmdStatus(DMA1_Stream1) != ENABLE);
 	   state1=3;
-
 	   break;
-   case 3:
 
+   case 3:
+	   shift=0;
 	   if ((RxMessageIMU[0]==0xff)&&(RxMessageIMU[1]==0x02))
 	   {
+		   Read_data(shift);
 		   DMA_SetCurrDataCounter(DMA1_Stream1, 60);
-		   DMA_Cmd(DMA1_Stream1,ENABLE);
-		   while(DMA_GetCmdStatus(DMA1_Stream1) != ENABLE);
 		   led_off(green1);
 		   led_on(red);
 	   }
@@ -629,113 +598,107 @@ void DMA1_Stream1_IRQHandler(void)
 		   led_off(red);
 		   state1=0;
 		   DMA_SetCurrDataCounter(DMA1_Stream1, 1);
-		   DMA_Cmd(DMA1_Stream1,ENABLE);
-		   while(DMA_GetCmdStatus(DMA1_Stream1) != ENABLE);
 		   counter=counter+1;
 		   if(counter>1){led_on(yellow);}
 	   }
 	   break;
-
    }
 
+   DMA_Cmd(DMA1_Stream1,ENABLE);
+   while(DMA_GetCmdStatus(DMA1_Stream1) != ENABLE);
 
-//    if(!(USART_GetFlagStatus(USART3,USART_FLAG_ORE)==SET)|(USART_GetFlagStatus(USART3,USART_FLAG_NE)==SET)|(USART_GetFlagStatus(USART3,USART_FLAG_FE)==SET)|(USART_GetFlagStatus(USART3,USART_FLAG_PE)==SET) )
-//    {
-//    	i=0;
-//    	while(i<=MESS_LENGTH_RX)
-//    	{
-//    		if ((RxMessageIMU[i]==SYNCX_IMU)&&(RxMessageIMU[i+1]==STX_IMU)){led_off(green1);break;}
-//    		i++;
-//    	}
-//
-//    	if((RxMessageIMU[i] == SYNCX_IMU) && (RxMessageIMU[i+1] == STX_IMU))
-//    	{
-//
-//    		led_off(green2);
-////    		counter = counter +1;
-////    		if (counter>1)
-////    		{
-////    			led_on(yellow);
-////
-////    		}
-//
-//    		lenght = (((short)RxMessageIMU[i+3]<<8) | (short)RxMessageIMU[i+4]);            // Length extract
-//    		crc = (((unsigned short)RxMessageIMU[i+lenght+5]<<8) |
-//    				(unsigned short)RxMessageIMU[i+lenght+1+5]);                          // CRC extract
-//    		if(crc == calcCRC(&RxMessageIMU[i+2], lenght+3))                              // Crc test
-//    		{
-//
-//    			switch(RxMessageIMU[i+2])                                                 // Determine command
-//    			{
-//    				case SBG_CONTINIOUS_DEFAULT_OUTPUT:
-//    													//led_on(yellow);
-//    													for(i = 4; i > 0; i--)      // 4 byte load in float value
-//    														{
-//    														*qW_ptr++ = RxMessageIMU[4+i];
-//    														*qX_ptr++ = RxMessageIMU[8+i];
-//    														*qY_ptr++ = RxMessageIMU[12+i];
-//    														*qZ_ptr++ = RxMessageIMU[16+i];
-//    														*eulx_ptr++ = RxMessageIMU[20+i];
-//    														*euly_ptr++ = RxMessageIMU[24+i];
-//    														*eulz_ptr++ = RxMessageIMU[28+i];
-//    														*Gx_ptr++ = RxMessageIMU[32+i];
-//    														*Gy_ptr++ = RxMessageIMU[36+i];
-//    														*Gz_ptr++ = RxMessageIMU[40+i];
-//    														*p_acc_x++ = RxMessageIMU[44+i];
-//    														*p_acc_y++ = RxMessageIMU[48+i];
-//    														*p_acc_z++ = RxMessageIMU[52+i];
-//    														}
-//    														Sensor_val.theta_x = -Sensor_val.theta_x;           // Due to orientation AS prototype
-//    														Sensor_val.gyro_x = -Sensor_val.gyro_x;
-//    														Sensor_val.theta_z = -Sensor_val.theta_z;           // Due to orientation AS prototype
-//    														Sensor_val.gyro_z = -Sensor_val.gyro_z;
-//
-//
-//    														//if (Sensor_val.theta_x >(0.2)){led_on(red);led_off(yellow);}
-//    														//if ((Sensor_val.theta_x <(0.2))&(Sensor_val.theta_x >(0))){led_on(yellow);led_off(red);}
-//
-//    														//--------------Sending data to Helios----------------//
-//    														//pUS1->US_TPR = (AT91_REG)&RxMessageIMU[0];        // Starting address of send buffer
-//    														//pUS1->US_TCR = MESS_LENGTH_RX;                    // we'll transmit number of data chars via DMA
-//    														//pUS1->US_PTCR = AT91C_PDC_TXTEN;                  // enable transmit transfer
-//    														//Data_Available |= 0x01;
-//    														//-----------------------------------------------------//
-//
-//
-//
-//
-//    														//debug_led2();
-//    														/////////////////////////
-//    														////Request EPOS data////
-//    														/////////////////////////
-//
-////                	                           			     EPOS_get_velocity_SDO(1);
-////                	                                         EPOS_get_velocity_SDO(2);
-////                	                                         EPOS_get_velocity_SDO(4);
-////
-////                	                                         //disable the usart3-IMU interrupts, while waiting for the EPOS data
-////                	                                         USART_ITConfig(USART3,USART_IT_RXNE,DISABLE);
-////                	                                         USART_ITConfig(USART3,USART_IT_TC,DISABLE);
-////
-////                	                                         //Enable Can interrupts
-////                	                                         CAN_ITConfig(CANx,CAN_IT_FF0 | CAN_IT_FOV0 | CAN_IT_FMP0 | CAN_IT_FF1 | CAN_IT_FOV1 | CAN_IT_FMP1, ENABLE);
-//
-//    														break;
-//    				default: break;
-//    			}
-//    		}
-//    	}
-//    }
-//    else
-//    {
-//    	USART3->SR &=~(0x00c0002f);		//clears the status bits for erros and RXNE
-//    }
+   //------Reset Receiving DMA-----------------------------------------------//
 
-    //------Reset Receiving DMA-----------------------------------------------//
-
-//    DMA_Cmd(DMA1_Stream1,ENABLE);				//Not necessary if DMA circular mode works
    DMA_ClearFlag(DMA1_Stream1,DMA_FLAG_TCIF1);
-    USART_DMACmd(USART3,USART_DMAReq_Rx,ENABLE);
+   USART_DMACmd(USART3,USART_DMAReq_Rx,ENABLE);
+
+}
+
+
+/*------------------------------------------------------------*/
+/* Reads the IMU data from the memory								*/
+/* if the synchronization step in DMA1_Stream1_IRQHandler has found	*/
+/* the Sync byte and the Start byte									*/
+/*------------------------------------------------------------*/
+void Read_data(int shift)
+{
+
+	unsigned int i;
+	unsigned short lenght;
+	unsigned short crc;
+	char *qW_ptr = (char*)&Sensor_val.qW, *qX_ptr = (char*)&Sensor_val.qX, *qY_ptr = (char*)&Sensor_val.qY, *qZ_ptr = (char*)&Sensor_val.qZ;
+	char *Gx_ptr = (char*)&Sensor_val.gyro_x, *Gy_ptr = (char*)&Sensor_val.gyro_y, *Gz_ptr = (char*)&Sensor_val.gyro_z;
+	char *eulx_ptr = (char*)&Sensor_val.theta_x, *euly_ptr = (char*)&Sensor_val.theta_y, *eulz_ptr = (char*)&Sensor_val.theta_z;
+	char *p_acc_x = (char*)&Sensor_val.acc_x;
+	char *p_acc_y = (char*)&Sensor_val.acc_y;
+	char *p_acc_z = (char*)&Sensor_val.acc_z;
+
+	lenght = (((short)RxMessageIMU[3-shift]<<8) | (short)RxMessageIMU[4-shift]);            // Length extract
+	crc = (((unsigned short)RxMessageIMU[lenght+5-shift]<<8) |
+			(unsigned short)RxMessageIMU[lenght+1+5-shift]);                          // CRC extract
+
+	if(crc == calcCRC(&RxMessageIMU[2-shift], lenght+3))                              // Crc test
+	{
+
+		switch(RxMessageIMU[2-shift])                                                 // Determine command
+		{
+		case SBG_CONTINIOUS_DEFAULT_OUTPUT:
+
+			//led_on(yellow);
+			for(i = 4; i > 0; i--)      // 4 byte load in float value
+			{
+				*qW_ptr++ = RxMessageIMU[4+i-shift];
+				*qX_ptr++ = RxMessageIMU[8+i-shift];
+				*qY_ptr++ = RxMessageIMU[12+i-shift];
+				*qZ_ptr++ = RxMessageIMU[16+i-shift];
+				*eulx_ptr++ = RxMessageIMU[20+i-shift];
+				*euly_ptr++ = RxMessageIMU[24+i-shift];
+				*eulz_ptr++ = RxMessageIMU[28+i-shift];
+				*Gx_ptr++ = RxMessageIMU[32+i-shift];
+				*Gy_ptr++ = RxMessageIMU[36+i-shift];
+				*Gz_ptr++ = RxMessageIMU[40+i-shift];
+				*p_acc_x++ = RxMessageIMU[44+i-shift];
+				*p_acc_y++ = RxMessageIMU[48+i-shift];
+				*p_acc_z++ = RxMessageIMU[52+i-shift];
+			}
+			Sensor_val.theta_x = -Sensor_val.theta_x;           // Due to orientation AS prototype
+			Sensor_val.gyro_x = -Sensor_val.gyro_x;
+			Sensor_val.theta_z = -Sensor_val.theta_z;           // Due to orientation AS prototype
+			Sensor_val.gyro_z = -Sensor_val.gyro_z;
+
+
+			if ((Sensor_val.theta_x <(0.2))&(Sensor_val.theta_x >(0)))
+			{
+				led_on(yellow);
+			}
+			else if((Sensor_val.theta_x >(0.2)))
+			{
+				led_off(yellow);
+			}
+
+
+//			if ((Sensor_val.theta_y <(0.2))&(Sensor_val.theta_y >(0)))
+//			{
+//				led_on(yellow);
+//			}
+//			else if((Sensor_val.theta_y >(0.2)))
+//			{
+//				led_off(yellow);
+//			}
+//
+//			if ((Sensor_val.theta_z >(0)))
+//			{
+//				led_on(yellow);
+//			}
+//			else if((Sensor_val.theta_z <(0)))
+//			{
+//				led_off(yellow);
+//			}
+
+			break;
+		default: break;
+		}
+	}
 
 }
 

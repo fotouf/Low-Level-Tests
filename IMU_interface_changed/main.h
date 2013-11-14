@@ -18,7 +18,10 @@ void Start_Continious_Mode(void);
 void SendMsgIMU(unsigned short DataNumber,uint8_t *StartAdress);
 void Delay(__IO uint32_t nCount);
 unsigned short calcCRC(unsigned char *pBuffer, unsigned short bufferSize);
-void Synchronisation_step(void);
+void Read_data(int shift);
+
+
+
 
 /* Exported typedef ----------------------------------------------------------*/
 typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
@@ -84,5 +87,5 @@ typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
 
 /* Transmit buffer size */
 #define Command_Size                       11
-#define MESS_LENGTH_RX          120
+#define MESS_LENGTH_RX          60
 

@@ -1,16 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <history>
    <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=Usart_testing_2.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\Usart_testing_2 -TC:\CooCox\CoIDE\configuration\ProgramData\Usart_testing_2/arm-gcc-link.ld -g">
-      <target file="Usart_testing_2.elf" lastModified="141a87ce4ed">
-         <source file="..\obj\stm32f4xx_usart.o" lastModified="141a87cdfec"/>
-         <source file="..\obj\Serial_synchronization.o" lastModified="141a87ce03a"/>
-         <source file="..\obj\startup_stm32f4xx.o" lastModified="141a87ce077"/>
-         <source file="..\obj\main.o" lastModified="141a87ce142"/>
-         <source file="..\obj\stm32f4xx_rcc.o" lastModified="141a87ce1c0"/>
-         <source file="..\obj\stm32f4xx_gpio.o" lastModified="141a87ce217"/>
-         <source file="..\obj\system_stm32f4xx.o" lastModified="141a87ce266"/>
-         <source file="..\obj\stm32f4xx_dma.o" lastModified="141a87ce2c5"/>
-         <source file="..\obj\misc.o" lastModified="141a87ce30d"/>
+      <target file="Usart_testing_2.elf" lastModified="14257523e33">
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="142575239bb"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="142575239ee"/>
+         <source file="..\obj\main.o" lastModified="14257523a61"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="14257523afb"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="14257523b51"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="14257523b99"/>
+         <source file="..\obj\stm32f4xx_dma.o" lastModified="14257523bf7"/>
+         <source file="..\obj\misc.o" lastModified="14257523c3e"/>
       </target>
    </processor>
 </history>

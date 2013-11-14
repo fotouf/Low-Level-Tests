@@ -1,32 +1,29 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <history>
-   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m4 -mthumb -Wall -ffunction-sections -g -O0 -c -DSTM32F407ZG -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -I..\..\..\workspace\Usart_testing_2\cmsis -I..\..\..\workspace -I..\..\..\workspace\Usart_testing_2 -I..\..\..\workspace\Usart_testing_2\cmsis_lib\include -I..\..\..\workspace\Usart_testing_2\cmsis_boot -I..\..\..\workspace\Usart_testing_2\cmsis_lib -I..\..\..">
-      <target file="stm32f4xx_gpio.o" lastModified="141a87ce217">
-         <source file="..\..\..\cmsis_lib\source\stm32f4xx_gpio.c" lastModified="1413684814d"/>
-      </target>
-      <target file="stm32f4xx_dma.o" lastModified="141a87ce2c5">
-         <source file="..\..\..\cmsis_lib\source\stm32f4xx_dma.c" lastModified="14136845bd9"/>
-      </target>
-      <target file="Serial_synchronization.o" lastModified="141a87ce03a">
-         <source file="..\..\..\Serial_synchronization.c" lastModified="141a83b0d11"/>
-      </target>
-      <target file="system_stm32f4xx.o" lastModified="141a87ce266">
-         <source file="..\..\..\cmsis_boot\system_stm32f4xx.c" lastModified="14136845c3d"/>
-      </target>
-      <target file="startup_stm32f4xx.o" lastModified="141a87ce077">
-         <source file="..\..\..\cmsis_boot\startup\startup_stm32f4xx.c" lastModified="14136845c11"/>
-      </target>
-      <target file="stm32f4xx_usart.o" lastModified="141a87cdfec">
-         <source file="..\..\..\cmsis_lib\source\stm32f4xx_usart.c" lastModified="14136846601"/>
-      </target>
-      <target file="main.o" lastModified="141a87ce142">
-         <source file="..\..\..\main.c" lastModified="141a87cddf2"/>
-      </target>
-      <target file="stm32f4xx_rcc.o" lastModified="141a87ce1c0">
+   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m4 -mthumb -Wall -ffunction-sections -g -O0 -c -DSTM32F407ZG -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -I..\..\..\workspace\IMU_interface_changed -I..\..\..\workspace\IMU_interface_changed\cmsis_lib -I..\..\..\workspace -I..\..\..\workspace\IMU_interface_changed\cmsis -I..\..\..\workspace\IMU_interface_changed\cmsis_boot -I..\..\.. -I..\..\..\workspace\IMU_interface_changed\cmsis_lib\include">
+      <target file="stm32f4xx_rcc.o" lastModified="14257523afb">
          <source file="..\..\..\cmsis_lib\source\stm32f4xx_rcc.c" lastModified="14136845cc1"/>
       </target>
-      <target file="misc.o" lastModified="141a87ce30d">
+      <target file="misc.o" lastModified="14257523c3e">
          <source file="..\..\..\cmsis_lib\source\misc.c" lastModified="14136846fa1"/>
+      </target>
+      <target file="system_stm32f4xx.o" lastModified="14257523b99">
+         <source file="..\..\..\cmsis_boot\system_stm32f4xx.c" lastModified="14136845c3d"/>
+      </target>
+      <target file="stm32f4xx_dma.o" lastModified="14257523bf7">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_dma.c" lastModified="14136845bd9"/>
+      </target>
+      <target file="stm32f4xx_gpio.o" lastModified="14257523b51">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_gpio.c" lastModified="1413684814d"/>
+      </target>
+      <target file="main.o" lastModified="14257523a61">
+         <source file="..\..\..\main.c" lastModified="14257503048"/>
+      </target>
+      <target file="stm32f4xx_usart.o" lastModified="142575239bb">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_usart.c" lastModified="14136846601"/>
+      </target>
+      <target file="startup_stm32f4xx.o" lastModified="142575239ee">
+         <source file="..\..\..\cmsis_boot\startup\startup_stm32f4xx.c" lastModified="14136845c11"/>
       </target>
    </processor>
 </history>
