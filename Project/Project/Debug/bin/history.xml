@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=Project.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\Project -TC:\CooCox\CoIDE\configuration\ProgramData\Project/arm-gcc-link.ld -g">
+      <target file="Project.elf" lastModified="1425d0b0802">
+         <source file="..\obj\EPOS.o" lastModified="1425d0b015e"/>
+         <source file="..\obj\Can.o" lastModified="1425d0b01db"/>
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="1425d0b0249"/>
+         <source file="..\obj\stm32f4xx_can.o" lastModified="1425d0b0316"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="1425d0b0349"/>
+         <source file="..\obj\main.o" lastModified="1425d0b0393"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="1425d0b0405"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="1425d0b0459"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="1425d0b04a2"/>
+         <source file="..\obj\stm32f4xx_dma.o" lastModified="1425d0b04fd"/>
+         <source file="..\obj\misc.o" lastModified="1425d0b0542"/>
+         <source file="..\obj\Serials.o" lastModified="1425d0b05fb"/>
+      </target>
+   </processor>
+</history>

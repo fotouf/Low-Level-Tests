@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m4 -mthumb -Wall -ffunction-sections -g -O0 -c -DSTM32F407ZG -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -I..\..\..\workspace\Project\cmsis_lib -I..\..\..\workspace\Project -I..\..\..\workspace -I..\..\..\workspace\Project\cmsis_lib\include -I..\..\..\workspace\Project\cmsis -I..\..\.. -I..\..\..\workspace\Project\cmsis_boot">
+      <target file="stm32f4xx_gpio.o" lastModified="1425d0b0459">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_gpio.c" lastModified="1425c7bfdbe"/>
+      </target>
+      <target file="stm32f4xx_dma.o" lastModified="1425d0b04fd">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_dma.c" lastModified="1425c7bf57e"/>
+      </target>
+      <target file="stm32f4xx_can.o" lastModified="1425d0b0316">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_can.c" lastModified="1425cae7d5e"/>
+      </target>
+      <target file="Serials.o" lastModified="1425d0b05fb">
+         <source file="..\..\..\Serials.c" lastModified="1425cf76a7d"/>
+      </target>
+      <target file="system_stm32f4xx.o" lastModified="1425d0b04a2">
+         <source file="..\..\..\cmsis_boot\system_stm32f4xx.c" lastModified="1425c7bea1e"/>
+      </target>
+      <target file="startup_stm32f4xx.o" lastModified="1425d0b0349">
+         <source file="..\..\..\cmsis_boot\startup\startup_stm32f4xx.c" lastModified="1425c7bea0a"/>
+      </target>
+      <target file="stm32f4xx_usart.o" lastModified="1425d0b0249">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_usart.c" lastModified="1425c7c07ac"/>
+      </target>
+      <target file="EPOS.o" lastModified="1425d0b015e">
+         <source file="..\..\..\EPOS.c" lastModified="1425d07ab98"/>
+      </target>
+      <target file="main.o" lastModified="1425d0b0393">
+         <source file="..\..\..\main.c" lastModified="1425cffdbe9"/>
+      </target>
+      <target file="Can.o" lastModified="1425d0b01db">
+         <source file="..\..\..\Can.c" lastModified="1425d05a6a2"/>
+      </target>
+      <target file="stm32f4xx_rcc.o" lastModified="1425d0b0405">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_rcc.c" lastModified="1425c7bf588"/>
+      </target>
+      <target file="misc.o" lastModified="1425d0b0542">
+         <source file="..\..\..\cmsis_lib\source\misc.c" lastModified="1425c7bea00"/>
+      </target>
+   </processor>
+</history>
