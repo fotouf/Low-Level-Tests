@@ -2,9 +2,14 @@
 #define MAIN_H_
 
 
-
+void System_Init(void);
 void system_clock_init(void);
 void Safety_first(void);
+void Delay(__IO uint32_t nCount);
+void init_controller(void);
+void stop_controller(void);
+
+
 
 extern int helios_stop;
 

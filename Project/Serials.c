@@ -225,6 +225,27 @@ void Start_Continious_Mode_IMU (void)
 	SendMsgIMU(3, TxMessageIMU);
 }
 
+/***************************************************************************/
+/* Bezeichnung  :   Stop_Continious_Mode()                                 */
+/* Funktion     :   Stoppt den Continuous Mode der IMU                     */
+/* Übergabewert :   ---                                                    */
+/* Rückgabewert :   ---                                                    */
+/***************************************************************************/
+void Stop_Continious_Mode(void)
+{
+    // Sets the IMU after initialization on Continuous Mode
+
+    //volatile AT91PS_USART pUS0 = AT91C_BASE_US0;    // Base Adresse der USART
+    TxMessageIMU[2] = SBG_SET_CONTINUOUS_MODE;
+    TxMessageIMU[5] = 0x00;     // Permanent (bool)
+    TxMessageIMU[6] = 0x00;     // Enable (bool)
+    TxMessageIMU[7] = 0x01;     // Divider (unsigned char)
+    //pUS0->US_RCR = 9; 								// Receive Counter Register (#receive transfers to be performed)
+
+    SendMsgIMU(3, TxMessageIMU);       // Set Continuous Mode
+}
+
+
 /**************************************************************************** /
 / * Description: calcCRC () 												* /
 / * Function: Calculates the CRC from CMD Length and Data 					* /
@@ -341,11 +362,11 @@ void DMA1_Stream1_IRQHandler(void)
 	   {
 		   Read_data_IMU(shift);
 		   DMA_SetCurrDataCounter(DMA1_Stream1, 60);
-		   led_on(green1);
+		   //led_on(yellow);
 	   }
 	   else
 	   {
-		   led_off(green1);
+		   //led_off(yellow);
 		   state1=0;
 		   DMA_SetCurrDataCounter(DMA1_Stream1, 1);
 		   //counter=counter+1;
@@ -416,15 +437,15 @@ void Read_data_IMU(int shift)
 			Sensor_val.theta_z = -Sensor_val.theta_z;           // Due to orientation AS prototype
 			Sensor_val.gyro_z = -Sensor_val.gyro_z;
 
-
-			if ((Sensor_val.theta_x <(0.2))&(Sensor_val.theta_x >(0)))
-			{
-				led_on(yellow);
-			}
-			else if((Sensor_val.theta_x >(0.2)))
-			{
-				led_off(yellow);
-			}
+			IMU_data_for_PC = 1;
+//			if ((Sensor_val.theta_x <(0.2))&(Sensor_val.theta_x >(0)))
+//			{
+//				led_on(yellow);
+//			}
+//			else if((Sensor_val.theta_x >(0.2)))
+//			{
+//				led_off(yellow);
+//			}
 
 
 //			if ((Sensor_val.theta_y <(0.2))&(Sensor_val.theta_y >(0)))
@@ -449,6 +470,7 @@ void Read_data_IMU(int shift)
 		default: break;
 		}
 	}
+
 
 }
 
@@ -574,7 +596,7 @@ void USART_PC_Config(void)
 
     DMA_ClearITPendingBit(DMA2_Stream6,DMA_IT_TCIF6);
 
-    DMA_ITConfig(DMA2_Stream6,DMA_IT_TC,DISABLE);
+    DMA_ITConfig(DMA2_Stream6,DMA_IT_TC,ENABLE);
     //---------------------------------------------------------------------------------//
 
 
@@ -595,23 +617,23 @@ void SendMsgHELIOS(unsigned short DataNumber,uint8_t *StartAdress)
 	*StartAdress++ = SYNCX_H;                          // Sync Byte
 	StartAdress++;                                     // Command data frame send
 	*StartAdress-- = DataNumber;                      // Length of Data
-	Checksummpos = calcCRC(StartAdress,DataNumber+2);   // Checksum built from CMD, LENGHT and DATA
+	Checksummpos = calcModulo256(StartAdress,DataNumber+2);   // Checksum built from CMD, LENGHT and DATA
 	StartAdress += (DataNumber+2);
 	*StartAdress++ = Checksummpos;
 	*StartAdress = ETX;
 
-	DMA_SetCurrDataCounter(DMA2_Stream6, DataNumber + 8);
+	DMA_SetCurrDataCounter(DMA2_Stream6, DataNumber + 5);
 
 	/*--------Before transfer the message to the High Level PC DO-----*/
 	/*--------Enable the DMA for receiving & request to receive------------*/
 	//Note: Just for checking. We send sth using Coolterm.
-
-    DMA_SetCurrDataCounter(DMA2_Stream1, 1);
-
-	DMA_Cmd(DMA2_Stream1,ENABLE);
-	while(DMA_GetCmdStatus(DMA2_Stream1) != ENABLE);
-
-	USART_DMACmd(USART6, USART_DMAReq_Rx, ENABLE);
+//
+//    DMA_SetCurrDataCounter(DMA2_Stream1, 1);
+//
+//	DMA_Cmd(DMA2_Stream1,ENABLE);
+//	while(DMA_GetCmdStatus(DMA2_Stream1) != ENABLE);
+//
+//	USART_DMACmd(USART6, USART_DMAReq_Rx, ENABLE);
 	//------------------------------------------------------------------------//
 
 
@@ -639,15 +661,16 @@ void Start_Continious_Mode_PC (void)
 
 /***************************************************************************/
 /* Description: DMA1_Stream3_IRQHandler () 									*/
-/* Function: Interrupt routine for DMA1_Stream3 / IMU command transmit handler			    */
+/* Function: Interrupt routine for DMA2_Stream6 / PC transmit handler			    */
 /* Transfer value: --- 														*/
 /* Returns: --- 															*/
 /***************************************************************************/
 void DMA2_Stream6_IRQHandler(void)
 {
-	led_on(red);
+	toggle_led(yellow);
+	//led_on(red);
 
-	USART_DMACmd(USART6,USART_DMAReq_Tx,DISABLE);
+	//USART_DMACmd(USART6,USART_DMAReq_Tx,DISABLE);
 
 	/* It is already disabled but just to be sure*/
 	DMA_Cmd(DMA2_Stream6,DISABLE);
@@ -693,11 +716,11 @@ void DMA2_Stream1_IRQHandler(void)
 			Read_data_Helios(shift);
 			DMA_SetCurrDataCounter(DMA2_Stream1, RX_BUFFERSIZE);
 			//led_off(green1);
-			led_on(red);
+			//toggle_led(red);
 		}
 		else
 		{
-			led_off(red);
+			//led_off(red);
 			state1=0;
 			DMA_SetCurrDataCounter(DMA2_Stream1, 1);
 			//counter1=counter1+1;
@@ -745,7 +768,7 @@ void Read_data_Helios(int shift)
 					 switch(RxMessageHELIOS[1-shift] & 0x0F)                               // Control Mode
 					 {
 					 case 0x00:  for(i = 0; i < 4; i++)                          // position control
-					 {
+					 { //toggle_led(red);
 						 *pos_x_ptr++ = RxMessageHELIOS[3+i-shift];
 						 *pos_y_ptr++ = RxMessageHELIOS[7+i-shift];
 						 *pos_z_ptr++ = RxMessageHELIOS[11+i-shift];
@@ -783,7 +806,6 @@ void Read_data_Helios(int shift)
 					 case 0x03:  Control_Mode = C_STOP;                          // stop
 
 
-					 //led_on(yellow);
 					 //		    	             	if(counter2 > 100){led_on(green2);}
 					 //
 					 //led_on(green2);
@@ -804,7 +826,7 @@ void Read_data_Helios(int shift)
 					 Control_Mode = C_FREEZE;                        // perfect position control
 					 break;
 
-					 case 0x05:  for(i = 0; i < 4; i++)
+					 case 0x05: for(i = 0; i < 4; i++)
 					 {
 						 *vel_x_ptr++ = RxMessageHELIOS[3+i-shift];
 						 *vel_y_ptr++ = RxMessageHELIOS[7+i-shift];
@@ -911,6 +933,7 @@ void Read_data_Helios(int shift)
 
 void Send_Sensor_Values_to_HELIOS(unsigned char Anzahl)
 {
+	//toggle_led(yellow);
     unsigned char i;
     char *ptr_1 = (char*)&Sensor_val.theta_x;
     char *ptr_2 = (char*)&Sensor_val.theta_z_abs;
@@ -1095,11 +1118,35 @@ void toggle_led(Led_TypeDef led)
 		}
 }
 
-void Delay(__IO uint32_t nCount)
+/***************************************************************************/
+/* Bezeichnung  :   calcModulo256()                                        */
+/* Funktion     :   Berechnet Modulo 256 aus CMD, Lenght und Data          */
+/* Übergabewert :   char *pBuffer   -> Wert wo der Test begonnen werden    */
+/*                                     soll                                */
+/*                  char buffersize -> Anzahl zu testender Byte für die    */
+/*                                     checksumme                          */
+/* Rückgabewert :   unsigned short  -> CRC Value                           */
+/***************************************************************************/
+unsigned char calcModulo256(char *pBuffer, unsigned short bufferSize)
 {
-  while(nCount--)
-  {
-  }
+    unsigned short  buffer = 0;
+    unsigned char   modulo = 0;
+    int i;
+
+    for(i = 0; i < bufferSize; i++)
+    {
+        buffer += *pBuffer++;
+    }
+
+    modulo = buffer % 256;
+    return modulo;
 }
+
+//void Delay(__IO uint32_t nCount)
+//{
+//  while(nCount--)
+//  {
+//  }
+//}
 
 
