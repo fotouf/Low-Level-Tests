@@ -2,6 +2,7 @@
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_dma.h"
 #include "stm32f4xx_usart.h"
+#include "misc.h"
 
 #include "main.h"
 #include "Serials.h"
@@ -10,7 +11,8 @@
 #include "Other.h"
 #include "Defines_Ballbot.h"
 #include "odometry.h"
-
+#include "state_feedback_control.h"
+#include "setpoint_filter.h"
 
 
 // Sensor Daten
@@ -213,6 +215,8 @@ int main(void)
 	/*CLock and leds initialization*/
 	System_Init();
 
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+
 	/*---------Configures the USART3 and USART6 peripheral and the DMA1 and DMA2 controllers-------*/
 	USART_PC_Config();
 	USART_IMU_Config();
@@ -376,11 +380,30 @@ int main(void)
 	  	Ballbot_stats = IDLE;						// First Status IDLE
 
 
-
-	/*----------Sending start continuous mode command to the High Level PC--------*/
-	//Comments:testing the sending part
+	/*------Requesting continuous data from the IMU--------- */
 	Start_Continious_Mode_IMU();
 
+	/*-------------------EPOS initialization(testing position)---------------------*/
+	EPOS_fault_reset(1);
+	EPOS_fault_reset(2);
+	EPOS_fault_reset(4);
+	EPOS_init(1);
+	EPOS_init(2);
+	EPOS_init(4);
+	EPOS_fault_reset(1);
+	EPOS_fault_reset(2);
+	EPOS_fault_reset(4);
+	EPOS_reset_communicaton(1);
+	EPOS_reset_communicaton(2);
+	EPOS_reset_communicaton(4);
+	Set_Pre_Operational_NMT_State(1);
+	Set_Pre_Operational_NMT_State(2);
+	Set_Pre_Operational_NMT_State(4);
+	EPOS_set_operation_mode(1, CURRENT_MODE);
+	EPOS_set_operation_mode(2, CURRENT_MODE);
+	EPOS_set_operation_mode(4, CURRENT_MODE);
+
+	/*----------Sending start continuous mode command to the High Level PC--------*/
 	/*--------Enable the DMA for receiving & request to receive------------*/
 
 	DMA_SetCurrDataCounter(DMA2_Stream1, 1);
@@ -392,27 +415,41 @@ int main(void)
 	//------------------------------------------------------------------------//
 
 
+	Delay(1000);
+	Motor_current_real.I_1 = 100;
+	Motor_current_real.I_2 = 100;
+	Motor_current_real.I_3 = 100;
 
-//---------------------------------------------------------------------------
-// Default Value
-//---------------------------------------------------------------------------
-
-
-
+	EPOS_set_current_SDO(1,0);
+	EPOS_set_current_SDO(2,0);
+	EPOS_set_current_SDO(4,0);
+	Delay(100);
 
 
 	while (1)
 	{
 
 
-		if (IMU_data_for_PC == 1 )
+		init=0;
+		EPOS_get_current_SDO(1);
+		Delay(100000);
+		EPOS_get_current_SDO(2);
+		Delay(100000);
+		EPOS_get_current_SDO(4);
+		Delay(100000);
+
+
+		if ((IMU_data_for_PC == 1)&&(available_data.EPOS1==1)&&(available_data.EPOS2==1)&&(available_data.EPOS3==1))
 		{
 			Gyro_Values_to_Theta_dot();
 			odometry();
-			//toggle_led(yellow);
-			Delay(1000);
+			toggle_led(green1);
+			Delay(100000);
 			Send_Sensor_Values_to_HELIOS(160);
 			IMU_data_for_PC = 0 ;
+			available_data.EPOS1=0;
+			available_data.EPOS2=0;
+			available_data.EPOS3=0;
 		}
 
 
@@ -624,3 +661,5 @@ void stop_controller(void)
 	EPOS_set_current_SDO(2,(short)Motor_current_real.I_2);
 	EPOS_set_current_SDO(4,(short)Motor_current_real.I_3);
 }
+
+

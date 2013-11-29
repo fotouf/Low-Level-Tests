@@ -1,20 +1,22 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <history>
    <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=Project.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\Project -TC:\CooCox\CoIDE\configuration\ProgramData\Project/arm-gcc-link.ld -g -L..\..\.. -lm">
-      <target file="Project.elf" lastModified="1429ff6847a">
-         <source file="..\obj\EPOS.o" lastModified="1429ff67d3d"/>
-         <source file="..\obj\Can.o" lastModified="1429ff67dbe"/>
-         <source file="..\obj\stm32f4xx_usart.o" lastModified="1429ff67e2e"/>
-         <source file="..\obj\stm32f4xx_can.o" lastModified="1429ff67eac"/>
-         <source file="..\obj\startup_stm32f4xx.o" lastModified="1429ff67ee2"/>
-         <source file="..\obj\main.o" lastModified="1429ff67f51"/>
-         <source file="..\obj\stm32f4xx_rcc.o" lastModified="1429ff67fc7"/>
-         <source file="..\obj\odometry.o" lastModified="1429ff68026"/>
-         <source file="..\obj\stm32f4xx_gpio.o" lastModified="1429ff6807b"/>
-         <source file="..\obj\system_stm32f4xx.o" lastModified="1429ff680c2"/>
-         <source file="..\obj\stm32f4xx_dma.o" lastModified="1429ff6811e"/>
-         <source file="..\obj\misc.o" lastModified="1429ff68164"/>
-         <source file="..\obj\Serials.o" lastModified="1429ff6825a"/>
+      <target file="Project.elf" lastModified="142a4cb3475">
+         <source file="..\obj\setpoint_filter.o" lastModified="142a4cb2b1f"/>
+         <source file="..\obj\state_feedback_control.o" lastModified="142a4cb2cdb"/>
+         <source file="..\obj\EPOS.o" lastModified="142a4cb2d40"/>
+         <source file="..\obj\Can.o" lastModified="142a4cb2daa"/>
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="142a4cb2e19"/>
+         <source file="..\obj\stm32f4xx_can.o" lastModified="142a4cb2e96"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="142a4cb2ecf"/>
+         <source file="..\obj\main.o" lastModified="142a4cb2f38"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="142a4cb2fbc"/>
+         <source file="..\obj\odometry.o" lastModified="142a4cb301b"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="142a4cb306f"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="142a4cb30b7"/>
+         <source file="..\obj\stm32f4xx_dma.o" lastModified="142a4cb3114"/>
+         <source file="..\obj\misc.o" lastModified="142a4cb315a"/>
+         <source file="..\obj\Serials.o" lastModified="142a4cb3243"/>
       </target>
    </processor>
 </history>

@@ -6,7 +6,7 @@ void SendMsgIMU(unsigned short DataNumber,uint8_t *StartAdress);
 void Start_Continious_Mode_IMU(void);
 unsigned short calcCRC(unsigned char *pBuffer, unsigned short bufferSize);
 void Read_data_IMU(int shift);
-void Start_Continious_Mode_IMU (void);
+void Stop_Continious_Mode(void);
 
 /* High Level PC serial interface functions */
 void USART_PC_Config(void);

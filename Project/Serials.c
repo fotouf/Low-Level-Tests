@@ -288,7 +288,7 @@ unsigned short calcCRC(unsigned char *pBuffer, unsigned short bufferSize)
 /************************************************* **************************/
 void DMA1_Stream3_IRQHandler(void)
 {
-	led_on(red);
+	//led_on(red);
 
 	USART_DMACmd(USART3,USART_DMAReq_Tx,DISABLE);
 
@@ -660,7 +660,7 @@ void Start_Continious_Mode_PC (void)
 }
 
 /***************************************************************************/
-/* Description: DMA1_Stream3_IRQHandler () 									*/
+/* Description: DMA2_Stream6_IRQHandler () 									*/
 /* Function: Interrupt routine for DMA2_Stream6 / PC transmit handler			    */
 /* Transfer value: --- 														*/
 /* Returns: --- 															*/
@@ -941,7 +941,7 @@ void Send_Sensor_Values_to_HELIOS(unsigned char Anzahl)
     char *ptr_4 = (char*)&phi_dot.phi_x;
     char *ptr_6 = (char*)&Sensor_val.gyro_x;
     char *ptr_7 = (char*)&Sensor_val.psi_dot_1;
-    char *ptr_8 = (char*)&Sensor_val.psi_dot_1;//Motor_current_real.I_1;
+    char *ptr_8 = (char*)&Sensor_val.current_EPOS1;//Motor_current_real.I_1;
     char *ptr_9 = (char*)&Helios_val.position_x;
     char *ptr_10 = (char*)&Sensor_val.qW;
     char *ptr_11 = (char*)&Sensor_val.acc_x;

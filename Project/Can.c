@@ -64,7 +64,7 @@ if ((CAN_GetLastErrorCode(CAN1)== CAN_ErrorCode_NoErr)&(init==0))		//If No error
 		/*----------------------*/
 		if ((RxMessage.FMI == 0))// && (available_data.EPOS1 != 1))			//avoid taking a message already taken from the other FIFO mailbox
 		{
-			toggle_led(red);
+
 			switch ( DataLow )
 					{
 						case RECEIVE_ACT_POS:
@@ -74,7 +74,7 @@ if ((CAN_GetLastErrorCode(CAN1)== CAN_ErrorCode_NoErr)&(init==0))		//If No error
 							Sensor_val.motor_vel_1 = DataHigh;
 							break;
 						case RECEIVE_ACT_CUR:
-							Sensor_val.current_EPOS1 = DataHigh;
+							Sensor_val.current_EPOS1 = DataHigh;toggle_led(red);
 							break;
 						case ACK_POS_SEND:	 	; break;
 						case ACK_VEL_SEND:		; break;
@@ -86,7 +86,7 @@ if ((CAN_GetLastErrorCode(CAN1)== CAN_ErrorCode_NoErr)&(init==0))		//If No error
 
 		if (RxMessage.FMI == 1)// && (available_data.EPOS2 != 1))
 		{
-			toggle_led(yellow);
+			//toggle_led(yellow);
 
 			switch ( DataLow )
 			{
@@ -196,7 +196,7 @@ if ((CAN_GetLastErrorCode(CAN1)==CAN_ErrorCode_NoErr) & (init == 0))		//No error
 
 		if (RxMessage.FMI == 0)// && (available_data.EPOS3 != 1))
 		{
-			toggle_led(green2);
+			//toggle_led(green2);
 			switch ( DataLow )
 			{
 				case RECEIVE_ACT_POS :
