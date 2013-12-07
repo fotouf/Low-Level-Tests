@@ -1,22 +1,25 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <history>
-   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=Project.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\Project -TC:\CooCox\CoIDE\configuration\ProgramData\Project/arm-gcc-link.ld -g -L..\..\.. -lm">
-      <target file="Project.elf" lastModified="142a4cb3475">
-         <source file="..\obj\setpoint_filter.o" lastModified="142a4cb2b1f"/>
-         <source file="..\obj\state_feedback_control.o" lastModified="142a4cb2cdb"/>
-         <source file="..\obj\EPOS.o" lastModified="142a4cb2d40"/>
-         <source file="..\obj\Can.o" lastModified="142a4cb2daa"/>
-         <source file="..\obj\stm32f4xx_usart.o" lastModified="142a4cb2e19"/>
-         <source file="..\obj\stm32f4xx_can.o" lastModified="142a4cb2e96"/>
-         <source file="..\obj\startup_stm32f4xx.o" lastModified="142a4cb2ecf"/>
-         <source file="..\obj\main.o" lastModified="142a4cb2f38"/>
-         <source file="..\obj\stm32f4xx_rcc.o" lastModified="142a4cb2fbc"/>
-         <source file="..\obj\odometry.o" lastModified="142a4cb301b"/>
-         <source file="..\obj\stm32f4xx_gpio.o" lastModified="142a4cb306f"/>
-         <source file="..\obj\system_stm32f4xx.o" lastModified="142a4cb30b7"/>
-         <source file="..\obj\stm32f4xx_dma.o" lastModified="142a4cb3114"/>
-         <source file="..\obj\misc.o" lastModified="142a4cb315a"/>
-         <source file="..\obj\Serials.o" lastModified="142a4cb3243"/>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -g -nostartfiles -Map=Project.map -O3 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\Project -TC:\CooCox\CoIDE\configuration\ProgramData\Project/arm-gcc-link.ld -g -L..\..\..\..\..\..\..\Program Files (x86)\GNU Tools ARM Embedded\4.7 2012q4\arm-none-eabi\lib\armv7e-m\fpu -lm">
+      <target file="Project.elf" lastModified="142c95b32eb">
+         <source file="..\..\..\..\..\..\..\Program Files (x86)\GNU Tools ARM Embedded\4.7 2012q4\arm-none-eabi\lib\armv7e-m\fpu\libm.a" lastModified="13b769b5e80"/>
+         <source file="..\obj\setpoint_filter.o" lastModified="142c95b2169"/>
+         <source file="..\obj\state_feedback_control.o" lastModified="142c95b253d"/>
+         <source file="..\obj\EPOS.o" lastModified="142c95b25dd"/>
+         <source file="..\obj\Can.o" lastModified="142c95b267d"/>
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="142c95b273b"/>
+         <source file="..\obj\stm32f4xx_can.o" lastModified="142c95b282b"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="142c95b2867"/>
+         <source file="..\obj\main.o" lastModified="142c95b2939"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="142c95b2a01"/>
+         <source file="..\obj\odometry.o" lastModified="142c95b2a85"/>
+         <source file="..\obj\Other.o" lastModified="142c95b2adf"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="142c95b2b61"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="142c95b2bc5"/>
+         <source file="..\obj\stm32f4xx_dma.o" lastModified="142c95b2c5b"/>
+         <source file="..\obj\misc(1).o" lastModified="142c95b2cbf"/>
+         <source file="..\obj\stm32f4xx_tim.o" lastModified="142c95b2e63"/>
+         <source file="..\obj\Serials.o" lastModified="142c95b30c5"/>
       </target>
    </processor>
 </history>

@@ -81,6 +81,9 @@ void state_feedback_control(void)
 		T_3 = -K_PHI_HULL_38*PDP_PHI_8*phi_dot.phi_dot_x-K_PHI_HULL_310*PDP_PHI_10*phi_dot.phi_dot_y-K_PHI_HULL_37*PDP_PHI_7*phi_dot.phi_x-K_PHI_HULL_39*PDP_PHI_9*phi_dot.phi_y+K_PHI_HULL_35*Helios_val.position_z+K_PHI_HULL_37*Helios_val.position_x+K_PHI_HULL_39*Helios_val.position_y-K_PHI_HULL_32*PDP_PHI_2*Sensor_val.theta_dot_x-K_PHI_HULL_34*PDP_PHI_4*Sensor_val.theta_dot_y-K_PHI_HULL_36*PDP_PHI_6*Sensor_val.theta_dot_z-K_PHI_HULL_31*PDP_PHI_1*Sensor_val.theta_x-K_PHI_HULL_33*PDP_PHI_3*Sensor_val.theta_y-K_PHI_HULL_35*PDP_PHI_5*Sensor_val.theta_z_abs;
 	}
 
+//	T_1 = T_1/2;
+//	T_2 = T_2/2;
+//	T_3 = T_3/2;
 
 	// Low pass on controller output (roll-off)
 	// FIR 4th order
@@ -170,6 +173,7 @@ void state_feedback_control(void)
 	Motor_current_real.I_1 = T_1/(I_GEAR*K_M)*1000000;	//mA
 	Motor_current_real.I_2 = T_2/(I_GEAR*K_M)*1000000;	//mA
 	Motor_current_real.I_3 = T_3/(I_GEAR*K_M)*1000000;	//mA
+
 }
 
 

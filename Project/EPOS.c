@@ -22,7 +22,7 @@ void Set_Operational_NMT_State(char node){
 
 	can_send_SDO(&data[0], node, 0, 2);				// Sends the message to node
 
-	_delay_ms(1);
+	Delay_us(1000);//_delay_ms(1);
 
 }
 
@@ -41,7 +41,7 @@ void Set_Pre_Operational_NMT_State(char node){
 
 	can_send_SDO(&data[0], node, 0, 2);				// Sends the message to node
 
-	_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
+	Delay_us(50000);//_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
 }
 
 
@@ -58,7 +58,7 @@ void EPOS_reset_communicaton(char node){
 	data [1]= node;
 
 	can_send_SDO(&data[0], node, 0, 2);				// Sends the message to node
-	_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
+	Delay_us(50000);//_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
 }
 
 
@@ -83,7 +83,7 @@ void EPOS_set_operation_mode(char node,char mode){
 
 	can_send_SDO(&data[0], node, 0, 8);				// Sends the message to node
 
-	_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
+	Delay_us(50000);//_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
 
 }
 
@@ -108,7 +108,7 @@ void EPOS_fault_reset(char node){
 
 	can_send_SDO(&data[0], node, 0, 8);				//  Sends the message to node
 
-	_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
+	Delay_us(50000);//_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
 
 	data [0]= 0x22;
 	data [1]= 0x40;
@@ -121,7 +121,7 @@ void EPOS_fault_reset(char node){
 
 	can_send_SDO(&data[0], node, 0, 8);				//  Sends the message to node
 
-	_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
+	Delay_us(50000);//_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
 }
 
 
@@ -145,7 +145,7 @@ void EPOS_disable(char node){
 
 	can_send_SDO(&data[0], node, 0, 8);				//Sends the message to node
 
-	_delay_ms(1);
+	Delay_us(1000);//_delay_ms(1);
 }
 
 
@@ -168,7 +168,7 @@ void EPOS_enable(char node){
 	data [7]= 0x00;
 
 	can_send_SDO(&data[0], node, 0, 8);				// Sends the message to node
-	_delay_ms(1);
+	Delay_us(1000);//_delay_ms(1);
 }
 
 /***************************************************************************/
@@ -194,7 +194,7 @@ void EPOS_init(char node){
 
 	//EPOS Enable operation mode
 
-	_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
+	Delay_us(50000);//_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
 
 	data [0]= 0x22;
 	data [1]= 0x40;
@@ -208,7 +208,7 @@ void EPOS_init(char node){
 	can_send_SDO(&data[0], node, 0, 8);				// Sends the message to a node
 
 	//EPOS halt mode
-	_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
+	Delay_us(50000);//_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
 
 	data [0]= 0x22;
 	data [1]= 0x40;
@@ -221,7 +221,7 @@ void EPOS_init(char node){
 
 	can_send_SDO(&data[0], node, 0, 8);				// Sends the message to a node;
 
-	_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
+	Delay_us(50000);//_delay_ms(10);									//Delay in order to let the EPOS respond before sending the next command
 }
 
 
@@ -247,7 +247,7 @@ void EPOS_stop(char node){
 
 	can_send_SDO(&data[0], node, 0, 8);				// Sendet die Message an node;
 
-	_delay_ms(1);
+	Delay_us(1000);//_delay_ms(1);
 }
 
 /***************************************************************************/
@@ -261,16 +261,6 @@ void _delay_ms(unsigned char ms){
 	while(delay > 10){delay--;}
 }
 
-/***************************************************************************/
-/* Name	        :	_delay_us()					   */
-/* Function		:	Waiting x 1 us					*/
-/*Transfer value: us -> number us												*/
-/***************************************************************************/
-
-void _delay_us(unsigned short us){
-	unsigned int delay = us*2;
-	while(delay){delay--;}
-}
 
 /***************************************************************************/
 /* Name	:	EPOS_set_speed_SDO()								   */
@@ -292,7 +282,7 @@ void EPOS_set_speed_SDO(int node,int v){
 
 	can_send_SDO(&data[0], node, 0, 8);				// Sends the message to node
 
-	_delay_us(50);
+	Delay_us(50);//_delay_us(50);
 }
 
 /***************************************************************************/
@@ -313,7 +303,8 @@ void EPOS_set_current_SDO(int node, short i){
 
 	can_send_SDO(&data[0], node, 0, 6);				// Sends the message to node
 
-	_delay_us(50);
+	Delay_us(100);//_delay_us(50);
+	//led_on(yellow);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +333,7 @@ void EPOS_set_position_SDO(int node,int pos){
 
 	can_send_SDO(&data[0], node, 0, 8);				// Sends the message to node
 
-	_delay_us(50);
+	Delay_us(50);//_delay_us(50);
 }
 
 /***************************************************************************/

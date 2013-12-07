@@ -24,7 +24,7 @@
 #define RW  	0.06					//Omniwheel radius
 #define ALPHA  	3.14159/(float)4		//Motor arrangement angle
 #define BETA  	(float)0				//Angle between coordinate system and real motor configuration
-#define Ts		1/158.7
+#define Ts		1.0/200.0//1/158.7
 #define I_GEAR	(float)26
 #define K_M		20.2					//mN/A
 #define PI		3.1415926
@@ -190,7 +190,7 @@
 
 // Security Parameters
 #define MAX_THETA			(30/(float)180*3.1415926)	//rad - maximal pich/roll angle
-#define MAX_TORQUE			4							//Nm - maximal torque output from controller
+#define MAX_TORQUE			4						//Nm - maximal torque output from controller
 #define MAX_VIRTUAL_TORQUE	5							//Nm - maximal torque output from controller
 #define MAX_MOTOR_SPEED		(10*2*PI)					//rad/s - maximal motor speed
 #define THRESHOLD 			400  						//Umschaltgrenze für Hysterese

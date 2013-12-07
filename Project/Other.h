@@ -12,3 +12,4 @@ void led_on(Led_TypeDef led);
 void led_off(Led_TypeDef led);
 void led_init(void);
 void toggle_led(Led_TypeDef led);
+void Delay_us(unsigned int us);

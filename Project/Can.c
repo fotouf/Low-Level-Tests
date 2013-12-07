@@ -72,9 +72,10 @@ if ((CAN_GetLastErrorCode(CAN1)== CAN_ErrorCode_NoErr)&(init==0))		//If No error
 							break;
 						case RECEIVE_ACT_VEL:
 							Sensor_val.motor_vel_1 = DataHigh;
+							led_on(red);
 							break;
 						case RECEIVE_ACT_CUR:
-							Sensor_val.current_EPOS1 = DataHigh;toggle_led(red);
+							Sensor_val.current_EPOS1 = DataHigh;
 							break;
 						case ACK_POS_SEND:	 	; break;
 						case ACK_VEL_SEND:		; break;
@@ -486,8 +487,6 @@ void can_send_SDO(unsigned char *data, unsigned char node, unsigned char rtr, un
 			TxMessage.DLC = lenght ;												//Specify the length of the frame
 			TransmitMailbox = CAN_Transmit(CANx,&TxMessage);						//Sends the message if there is empty mailbox and returns the number of the mailbox
 			}
-
-	//--DEBUG--//
 
 }
 

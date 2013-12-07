@@ -4,9 +4,10 @@
     <Device manufacturerId="9" manufacturerName="ST" chipId="345" chipName="STM32F407ZG" boardId="" boardName=""/>
     <BuildOption>
       <Compile>
-        <Option name="OptimizationLevel" value="0"/>
+        <Option name="OptimizationLevel" value="3"/>
         <Option name="UseFPU" value="0"/>
         <Option name="UserEditCompiler" value=""/>
+        <Option name="FPU" value="2"/>
         <Includepaths>
           <Includepath path="."/>
         </Includepaths>
@@ -15,6 +16,7 @@
           <Define name="STM32F4XX"/>
           <Define name="USE_STDPERIPH_DRIVER"/>
           <Define name="__ASSEMBLY__"/>
+          <Define name="__FPU_USED"/>
         </DefinedSymbols>
       </Compile>
       <Link useDefault="0">
@@ -23,7 +25,7 @@
         <Option name="UseMemoryLayout" value="1"/>
         <Option name="Library" value="Not use C Library"/>
         <LinkedLibraries>
-          <Libset dir="" libs="m"/>
+          <Libset dir="..\..\..\..\program files (x86)\gnu tools arm embedded\4.7 2012q4\arm-none-eabi\lib\armv7e-m\fpu\" libs="m"/>
         </LinkedLibraries>
         <MemoryAreas debugInFlashNotRAM="1">
           <Memory name="IROM1" type="ReadOnly" size="0x00100000" startValue="0x08000000"/>
@@ -72,6 +74,7 @@
     <Component id="501" name="RCC" path="" type="2"/>
     <Component id="504" name="GPIO" path="" type="2"/>
     <Component id="511" name="DMA" path="" type="2"/>
+    <Component id="513" name="TIM" path="" type="2"/>
     <Component id="517" name="USART" path="" type="2"/>
     <Component id="521" name="CAN" path="" type="2"/>
     <Component id="524" name="MISC" path="" type="2"/>
@@ -81,11 +84,12 @@
     <File name="cmsis_lib/source/stm32f4xx_dma.c" path="cmsis_lib/source/stm32f4xx_dma.c" type="1"/>
     <File name="cmsis_boot/startup/startup_stm32f4xx.c" path="cmsis_boot/startup/startup_stm32f4xx.c" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_usart.c" path="cmsis_lib/source/stm32f4xx_usart.c" type="1"/>
-    <File name="cmsis_lib/source/stm32f4xx_rcc.c" path="cmsis_lib/source/stm32f4xx_rcc.c" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_can.c" path="cmsis_lib/source/stm32f4xx_can.c" type="1"/>
+    <File name="cmsis_lib/source/stm32f4xx_rcc.c" path="cmsis_lib/source/stm32f4xx_rcc.c" type="1"/>
+    <File name="Other.c" path="Other.c" type="1"/>
     <File name="Can.h" path="Can.h" type="1"/>
-    <File name="Serials.c" path="Serials.c" type="1"/>
     <File name="cmsis/core_cmInstr.h" path="cmsis/core_cmInstr.h" type="1"/>
+    <File name="Serials.c" path="Serials.c" type="1"/>
     <File name="Defines_ballbot.h" path="Defines_ballbot.h" type="1"/>
     <File name="extern.h" path="extern.h" type="1"/>
     <File name="EPOS.h" path="EPOS.h" type="1"/>
@@ -100,26 +104,28 @@
     <File name="state_feedback_control.c" path="state_feedback_control.c" type="1"/>
     <File name="main.h" path="main.h" type="1"/>
     <File name="cmsis" path="" type="2"/>
-    <File name="cmsis_lib/source/misc.c" path="cmsis_lib/source/misc.c" type="1"/>
+    <File name="cmsis_lib/source/misc.c" path="cmsis_lib/source/misc(1).c" type="1"/>
+    <File name="cmsis_lib/include/stm32f4xx_tim.h" path="cmsis_lib/include/stm32f4xx_tim.h" type="1"/>
     <File name="cmsis_lib" path="" type="2"/>
     <File name="odometry.h" path="odometry.h" type="1"/>
     <File name="cmsis_lib/source" path="" type="2"/>
     <File name="cmsis_lib/include/stm32f4xx_dma.h" path="cmsis_lib/include/stm32f4xx_dma.h" type="1"/>
+    <File name="cmsis_lib/source/stm32f4xx_tim.c" path="cmsis_lib/source/stm32f4xx_tim.c" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_gpio.h" path="cmsis_lib/include/stm32f4xx_gpio.h" type="1"/>
     <File name="setpoint_filter.h" path="setpoint_filter.h" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_can.h" path="cmsis_lib/include/stm32f4xx_can.h" type="1"/>
     <File name="Other.h" path="Other.h" type="1"/>
     <File name="Can.c" path="Can.c" type="1"/>
     <File name="cmsis_lib/include/misc.h" path="cmsis_lib/include/misc.h" type="1"/>
-    <File name="EPOS.c" path="EPOS.c" type="1"/>
     <File name="setpoint_filter.c" path="setpoint_filter.c" type="1"/>
+    <File name="EPOS.c" path="EPOS.c" type="1"/>
     <File name="cmsis_boot/stm32f4xx_conf.h" path="cmsis_boot/stm32f4xx_conf.h" type="1"/>
     <File name="cmsis_boot/system_stm32f4xx.h" path="cmsis_boot/system_stm32f4xx.h" type="1"/>
     <File name="cmsis_lib/include" path="" type="2"/>
-    <File name="cmsis_lib/include/stm32f4xx_rcc.h" path="cmsis_lib/include/stm32f4xx_rcc.h" type="1"/>
+    <File name="cmsis_lib/include/stm32f4xx_rcc.h" path="cmsis_lib/include/stm32f4xx_rcc(1).h" type="1"/>
     <File name="state_feedback_control.h" path="state_feedback_control.h" type="1"/>
     <File name="odometry.c" path="odometry.c" type="1"/>
-    <File name="main.c" path="main.c" type="1"/>
     <File name="Serials.h" path="Serials.h" type="1"/>
+    <File name="main.c" path="main.c" type="1"/>
   </Files>
 </Project>

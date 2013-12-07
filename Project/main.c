@@ -3,6 +3,8 @@
 #include "stm32f4xx_dma.h"
 #include "stm32f4xx_usart.h"
 #include "misc.h"
+#include "stm32f4xx_tim.h"
+#include "stm32f4xx_gpio.h"
 
 #include "main.h"
 #include "Serials.h"
@@ -13,7 +15,6 @@
 #include "odometry.h"
 #include "state_feedback_control.h"
 #include "setpoint_filter.h"
-
 
 // Sensor Daten
 struct _Sensor_Values {
@@ -215,6 +216,10 @@ int main(void)
 	/*CLock and leds initialization*/
 	System_Init();
 
+	/*---------Configures the timer 6-------------*/
+	TIM_config();
+
+
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 
 	/*---------Configures the USART3 and USART6 peripheral and the DMA1 and DMA2 controllers-------*/
@@ -222,6 +227,7 @@ int main(void)
 	USART_IMU_Config();
 	/*---------Configures CAN controller----------*/
 	init_CAN();
+
 
 
 
@@ -376,7 +382,9 @@ int main(void)
 //		start_timer1(_6_3_MS);
 
 
-		Control_Mode = C_STOP;
+//		Control_Mode = C_ACCELERATION;
+
+		Control_Mode = C_POSITION;
 	  	Ballbot_stats = IDLE;						// First Status IDLE
 
 
@@ -415,43 +423,204 @@ int main(void)
 	//------------------------------------------------------------------------//
 
 
-	Delay(1000);
-	Motor_current_real.I_1 = 100;
-	Motor_current_real.I_2 = 100;
-	Motor_current_real.I_3 = 100;
+//	Delay_us(1000);
+//	Motor_current_real.I_1 = 100;
+//	Motor_current_real.I_2 = 100;
+//	Motor_current_real.I_3 = 100;
 
-	EPOS_set_current_SDO(1,0);
-	EPOS_set_current_SDO(2,0);
-	EPOS_set_current_SDO(4,0);
-	Delay(100);
+//	EPOS_set_current_SDO(1,0);
+//	EPOS_set_current_SDO(2,0);
+//	EPOS_set_current_SDO(4,0);
+//	Delay_us(100);
 
+	init=0;
 
 	while (1)
 	{
 
+		TIM_SetCounter(TIM7,0);
+		TIM_Cmd(TIM7,ENABLE);
 
-		init=0;
-		EPOS_get_current_SDO(1);
-		Delay(100000);
-		EPOS_get_current_SDO(2);
-		Delay(100000);
-		EPOS_get_current_SDO(4);
-		Delay(100000);
-
+		/*--When IMU sends data request data from the EPOS(NOTES:not tested. tied to IMU frequency)---*/
+		if(((available_data.EPOS1 == 0)||(available_data.EPOS2 == 0)||(available_data.EPOS3 == 0)))//&&(IMU_data_for_PC == 1))
+		{
+			led_off(red);
+			Delay_us(100);
+			EPOS_get_velocity_SDO(1);
+			Delay_us(100);
+			EPOS_get_velocity_SDO(2);
+			Delay_us(100);
+			EPOS_get_velocity_SDO(4);
+			Delay_us(100);
+		}
 
 		if ((IMU_data_for_PC == 1)&&(available_data.EPOS1==1)&&(available_data.EPOS2==1)&&(available_data.EPOS3==1))
 		{
+
+//			GPIO_SetBits(GPIOE,GPIO_Pin_0);
 			Gyro_Values_to_Theta_dot();
 			odometry();
-			toggle_led(green1);
-			Delay(100000);
+			state_feedback_control();
+//			GPIO_ResetBits(GPIOE,GPIO_Pin_0);
+
+			Safety_first();
+			EPOS_set_current_SDO(1,(short)Motor_current_real.I_1);
+			EPOS_set_current_SDO(2,(short)Motor_current_real.I_2);
+			EPOS_set_current_SDO(4,(short)Motor_current_real.I_3);
+
 			Send_Sensor_Values_to_HELIOS(160);
+
 			IMU_data_for_PC = 0 ;
 			available_data.EPOS1=0;
 			available_data.EPOS2=0;
 			available_data.EPOS3=0;
+			//led_off(red);
 		}
 
+
+		if( (2*TIM_GetCounter(TIM7)) > 1000 )
+		{
+			led_off(green1);
+		}
+		TIM_Cmd(TIM7,DISABLE);
+
+//		switch(Ballbot_stats)							// Event Handler
+//			  {
+//		//-------------------------------------------------------------------------------------------------------
+//				  // Zustand Initialisierung
+//				  case INIT:		freq_Data_HELIOS = 0;
+//									init_controller();
+//									Ballbot_stats = CONTROL;
+//
+//									break;
+//		//-------------------------------------------------------------------------------------------------------
+//				  // Zustand Parken
+//				  case PARK:
+//									break;
+//		//-------------------------------------------------------------------------------------------------------
+//				  // Zustand Regelung
+//				  case CONTROL:		init=0;
+//				  	  	  	  	  	// Daten von den EPOS lesen
+//									if((available_data.EPOS1 == 0)||(available_data.EPOS2 == 0)||(available_data.EPOS3 == 0))
+//									{
+//										EPOS_get_velocity_SDO(1);
+//										EPOS_get_velocity_SDO(2);
+//										EPOS_get_velocity_SDO(4);
+//										_delay_us(400);						// Wait to receive Motor Values
+//										available_data.EPOS1 = 1;				//!!!assumption that epos data are available!!!!!!
+//										available_data.EPOS2 = 1;
+//										available_data.EPOS3 = 1;
+//
+//									}
+//
+//									// Daten an die EPOS senden
+//
+//										Safety_first();
+//										//Motor_current_real.I_1 = 0;
+//										//Motor_current_real.I_2 = 0;
+//										//Motor_current_real.I_3 = 0;
+//										EPOS_set_current_SDO(1,(short)Motor_current_real.I_1);
+//										EPOS_set_current_SDO(2,(short)Motor_current_real.I_2);
+//										EPOS_set_current_SDO(4,(short)Motor_current_real.I_3);
+//
+//										// Beendet den Controller, wenn das HELIOS Board den Befehl gibt
+//										if(Control_Mode == C_STOP)
+//										{
+//											Ballbot_stats = STOP;
+//										}
+//
+//										// Regelung velocity und sollwert auf 0 wenn Helios abstürzt
+//										if(helios_stop > 40)			// 1/4 Sekunde lang keine Antwort von Helios
+//										{
+//											//Control_Mode = C_VELOCITY;
+//											Control_Mode = C_ACCELERATION_WZ;
+//											Helios_val.velocity_x_raw = 0;
+//											Helios_val.velocity_y_raw = 0;
+//											helios_stop = 0;
+//										}
+//										else
+//										{
+//											helios_stop++;
+//										}
+//
+//										// Send Sensor Values to MATLAB for Logging
+//										//++data_check_counter;
+//										// Send_Sensor_Values_to_MATLAB();
+//
+//										/*
+//										if(Hull_Mode == H_OSCILLATION)
+//										{
+//											hull_frequenzy();
+//										}
+//
+//										if(Hull_Mode == H_PARKING)
+//										{
+//											hull_parking();
+//										}
+//										*/
+//
+//
+//
+//									// Berechnugen für Regelung durchführen, Daten an Helios senden und einlesen
+//									if((IMU_data_for_PC == 1)&&(available_data.EPOS1==1)&&(available_data.EPOS2==1)&&(available_data.EPOS3==1))	// Wenn alle Daten eingelesen sind
+//									{
+//										// Odometrie, Regelung
+//										Gyro_Values_to_Theta_dot();
+//										odometry();
+//										//kalman();
+//										setpoint_filter();
+//										state_feedback_control();
+//										//non_linear_control();
+//										//planar_control();
+//										IMU_data_for_PC = 0 ;
+//										available_data.EPOS1=0;
+//										available_data.EPOS2=0;
+//										available_data.EPOS3=0;										// Read Data from HELIOS
+//
+//										//Read_HELIOS_Data();	//this happens anyway, we read PC data using interrupts
+//
+//										// Send Data to Helios Frequenz 80Hz
+//										freq_Data_HELIOS = 10;
+//										data_check_counter++;
+//										if(freq_Data_HELIOS >= 3)
+//										{
+//											freq_Data_HELIOS = 0;
+//
+//											Send_Sensor_Values_to_HELIOS(ANZ_SENSOR_BYTE_HELIOS);
+//										}
+//										else
+//										{
+//										    freq_Data_HELIOS++;
+//										}
+//									}
+//									break;
+//		//-------------------------------------------------------------------------------------------------------
+//				  // Zustand Stop den Regler
+//				  case STOP:		stop_controller();
+//									Ballbot_stats = IDLE;
+//									break;
+//		//-------------------------------------------------------------------------------------------------------
+//		   		  // Zustand Idle Wartet auf Befehle vom HELIOS
+//				  case IDLE:		// Read Data from HELIOS
+//
+//								    //Read_HELIOS_Data(); 	//this happens anyway, we read PC data using interrupts
+//
+//									if(Control_Mode != C_STOP)
+//									{
+//										Ballbot_stats = INIT;
+//									}
+//									//_delay_ms(2000);
+//									break;
+//				  case EMERCENCY_STOP:
+//									Motor_current_real.I_1 = 0;
+//									Motor_current_real.I_2 = 0;
+//									Motor_current_real.I_3 = 0;
+//									EPOS_set_current_SDO(1,(short)Motor_current_real.I_1);
+//									EPOS_set_current_SDO(2,(short)Motor_current_real.I_2);
+//									EPOS_set_current_SDO(4,(short)Motor_current_real.I_3);
+//									break;
+//				  default: 			break;						// Darf nicht vorkommen
+//			  }
 
 	}
 }
@@ -512,12 +681,12 @@ void System_Init(void)
 	if(source==0x08){led_on(green1);}
 }
 
-void Delay(__IO uint32_t nCount)
-{
-  while(nCount--)
-  {
-  }
-}
+//void Delay_us(unsigned int us)
+//{
+//  while(us--)
+//  {
+//  }
+//}
 
 /***************************************************************************/
 /* Bezeichnung	:	init_controller()									   */
@@ -620,6 +789,9 @@ void init_controller(void)
 	Sensor_val.current_EPOS1 = 0;
 	Sensor_val.current_EPOS2 = 0;
 	Sensor_val.current_EPOS3 = 0;
+
+	Start_Continious_Mode_IMU();	// Initialize IMU
+
 	/*-------------------EPOS initialization---------------------*/
 	EPOS_fault_reset(1);
 	EPOS_fault_reset(2);
@@ -642,7 +814,15 @@ void init_controller(void)
 
 	// At a test version of CAN there weren't any pending messages at this point
 
-	Start_Continious_Mode_IMU();	// Initialize IMU
+	/*--------Enable the DMA for receiving from PC & request to receive------------*/
+
+	DMA_SetCurrDataCounter(DMA2_Stream1, 1);
+
+	DMA_Cmd(DMA2_Stream1,ENABLE);
+	while(DMA_GetCmdStatus(DMA2_Stream1) != ENABLE);
+
+	USART_DMACmd(USART6, USART_DMAReq_Rx, ENABLE);
+	//------------------------------------------------------------------------//
 }
 
 /***************************************************************************/
@@ -662,4 +842,46 @@ void stop_controller(void)
 	EPOS_set_current_SDO(4,(short)Motor_current_real.I_3);
 }
 
+
+void TIM_config()
+{
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+	/*-----------Timer TIM6-------------*/
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6,ENABLE); //low speed APB -> 42MHz frequency
+
+	TIM_TimeBaseInitStruct.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseInitStruct.TIM_CounterMode =TIM_CounterMode_Up  ;
+	TIM_TimeBaseInitStruct.TIM_Period = 0xFFFF;
+	TIM_TimeBaseInitStruct.TIM_Prescaler = 0x0054;
+
+	TIM_TimeBaseInit(TIM6,&TIM_TimeBaseInitStruct);
+	TIM_Cmd(TIM6,ENABLE);
+
+
+	/*-----------Timer TIM7-------------*/
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7,ENABLE); //low speed APB -> 42MHz frequency
+
+	TIM_TimeBaseInitStruct.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseInitStruct.TIM_CounterMode =TIM_CounterMode_Up  ;
+	TIM_TimeBaseInitStruct.TIM_Period = 0xFFFF;
+	TIM_TimeBaseInitStruct.TIM_Prescaler = 0x0054;
+
+	TIM_TimeBaseInit(TIM7,&TIM_TimeBaseInitStruct);
+	//TIM_Cmd(TIM7,ENABLE);
+
+	/*------ GPIO-E for time computation-----*/
+
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT ;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz; //Fast speed
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL  ;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP ;
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+}
 

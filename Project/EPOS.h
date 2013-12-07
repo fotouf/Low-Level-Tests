@@ -29,7 +29,6 @@ void EPOS_reset_communicaton(char node);
 void EPOS_init(char node);
 void EPOS_stop(char node);
 void _delay_ms(unsigned char ms);
-void _delay_us(unsigned short us);
 void EPOS_set_speed_SDO(int node,int v);
 void EPOS_set_current_SDO(int node, short i);
 void EPOS_set_position_SDO(int node,int pos);

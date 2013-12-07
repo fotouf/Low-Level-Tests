@@ -1,50 +1,56 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <history>
-   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m4 -mthumb -Wall -ffunction-sections -g -O0 -c -DSTM32F407ZG -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -I..\..\..\workspace\Project\cmsis_lib -I..\..\..\workspace\Project -I..\..\..\workspace -I..\..\..\workspace\Project\cmsis_lib\include -I..\..\..\workspace\Project\cmsis -I..\..\.. -I..\..\..\workspace\Project\cmsis_boot">
-      <target file="stm32f4xx_gpio.o" lastModified="142a4cb306f">
-         <source file="..\..\..\cmsis_lib\source\stm32f4xx_gpio.c" lastModified="1425c7bfdbe"/>
+   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wall -ffunction-sections -g -O3 -c -DSTM32F407ZG -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -D__FPU_USED -I..\..\..\workspace\Project\cmsis_lib -I..\..\..\workspace\Project -I..\..\..\workspace -I..\..\..\workspace\Project\cmsis_lib\include -I..\..\..\workspace\Project\cmsis -I..\..\.. -I..\..\..\workspace\Project\cmsis_boot">
+      <target file="stm32f4xx_gpio.o" lastModified="142c95b2b61">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_gpio.c" lastModified="142c29ff4df"/>
       </target>
-      <target file="stm32f4xx_dma.o" lastModified="142a4cb3114">
-         <source file="..\..\..\cmsis_lib\source\stm32f4xx_dma.c" lastModified="1425c7bf57e"/>
+      <target file="Other.o" lastModified="142c95b2adf">
+         <source file="..\..\..\Other.c" lastModified="142c321ece7"/>
       </target>
-      <target file="stm32f4xx_can.o" lastModified="142a4cb2e96">
-         <source file="..\..\..\cmsis_lib\source\stm32f4xx_can.c" lastModified="1425cae7d5e"/>
+      <target file="stm32f4xx_dma.o" lastModified="142c95b2c5b">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_dma.c" lastModified="142c29ffbd2"/>
       </target>
-      <target file="setpoint_filter.o" lastModified="142a4cb2b1f">
-         <source file="..\..\..\setpoint_filter.c" lastModified="142a4bd736b"/>
+      <target file="stm32f4xx_can.o" lastModified="142c95b282b">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_can.c" lastModified="142c2a012a5"/>
       </target>
-      <target file="Serials.o" lastModified="142a4cb3243">
-         <source file="..\..\..\Serials.c" lastModified="142a4b73da2"/>
+      <target file="setpoint_filter.o" lastModified="142c95b2169">
+         <source file="..\..\..\setpoint_filter.c" lastModified="142c798e307"/>
       </target>
-      <target file="system_stm32f4xx.o" lastModified="142a4cb30b7">
-         <source file="..\..\..\cmsis_boot\system_stm32f4xx.c" lastModified="1425c7bea1e"/>
+      <target file="Serials.o" lastModified="142c95b30c5">
+         <source file="..\..\..\Serials.c" lastModified="142c953c7a6"/>
       </target>
-      <target file="startup_stm32f4xx.o" lastModified="142a4cb2ecf">
-         <source file="..\..\..\cmsis_boot\startup\startup_stm32f4xx.c" lastModified="1425c7bea0a"/>
+      <target file="stm32f4xx_tim.o" lastModified="142c95b2e63">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_tim.c" lastModified="142c2a3c117"/>
       </target>
-      <target file="stm32f4xx_usart.o" lastModified="142a4cb2e19">
-         <source file="..\..\..\cmsis_lib\source\stm32f4xx_usart.c" lastModified="1425c7c07ac"/>
+      <target file="system_stm32f4xx.o" lastModified="142c95b2bc5">
+         <source file="..\..\..\cmsis_boot\system_stm32f4xx.c" lastModified="142c29fe900"/>
       </target>
-      <target file="EPOS.o" lastModified="142a4cb2d40">
-         <source file="..\..\..\EPOS.c" lastModified="1425d07ab98"/>
+      <target file="startup_stm32f4xx.o" lastModified="142c95b2867">
+         <source file="..\..\..\cmsis_boot\startup\startup_stm32f4xx.c" lastModified="142c29fe8fd"/>
       </target>
-      <target file="main.o" lastModified="142a4cb2f38">
-         <source file="..\..\..\main.c" lastModified="142a4c6775e"/>
+      <target file="stm32f4xx_usart.o" lastModified="142c95b273b">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_usart.c" lastModified="142c2a00655"/>
       </target>
-      <target file="odometry.o" lastModified="142a4cb301b">
-         <source file="..\..\..\odometry.c" lastModified="1429fb5f920"/>
+      <target file="EPOS.o" lastModified="142c95b25dd">
+         <source file="..\..\..\EPOS.c" lastModified="142c94ec772"/>
       </target>
-      <target file="stm32f4xx_rcc.o" lastModified="142a4cb2fbc">
-         <source file="..\..\..\cmsis_lib\source\stm32f4xx_rcc.c" lastModified="1425c7bf588"/>
+      <target file="main.o" lastModified="142c95b2939">
+         <source file="..\..\..\main.c" lastModified="142c951ec7c"/>
       </target>
-      <target file="Can.o" lastModified="142a4cb2daa">
-         <source file="..\..\..\Can.c" lastModified="142a4a44135"/>
+      <target file="odometry.o" lastModified="142c95b2a85">
+         <source file="..\..\..\odometry.c" lastModified="142c798e2dd"/>
       </target>
-      <target file="misc.o" lastModified="142a4cb315a">
-         <source file="..\..\..\cmsis_lib\source\misc.c" lastModified="1425c7bea00"/>
+      <target file="misc(1).o" lastModified="142c95b2cbf">
+         <source file="..\..\..\cmsis_lib\source\misc(1).c" lastModified="142c2a018c9"/>
       </target>
-      <target file="state_feedback_control.o" lastModified="142a4cb2cdb">
-         <source file="..\..\..\state_feedback_control.c" lastModified="142a4be7423"/>
+      <target file="stm32f4xx_rcc.o" lastModified="142c95b2a01">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_rcc.c" lastModified="142c29fe8f9"/>
+      </target>
+      <target file="Can.o" lastModified="142c95b267d">
+         <source file="..\..\..\Can.c" lastModified="142c9455bbf"/>
+      </target>
+      <target file="state_feedback_control.o" lastModified="142c95b253d">
+         <source file="..\..\..\state_feedback_control.c" lastModified="142c94cf558"/>
       </target>
    </processor>
 </history>

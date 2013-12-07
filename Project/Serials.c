@@ -339,6 +339,7 @@ void DMA1_Stream1_IRQHandler(void)
    case 1:
 	   if(RxMessageIMU[0]==0x02)
 	   {
+
 		   state1=2;
 		   DMA_SetCurrDataCounter(DMA1_Stream1, 58);
 	   }
@@ -350,6 +351,7 @@ void DMA1_Stream1_IRQHandler(void)
 	   break;
 
    case 2:
+
 	   shift = 2;
 	   Read_data_IMU(shift);
 	   DMA_SetCurrDataCounter(DMA1_Stream1, 60);
@@ -360,9 +362,9 @@ void DMA1_Stream1_IRQHandler(void)
 	   shift=0;
 	   if ((RxMessageIMU[0]==0xff)&&(RxMessageIMU[1]==0x02))
 	   {
+
 		   Read_data_IMU(shift);
 		   DMA_SetCurrDataCounter(DMA1_Stream1, 60);
-		   //led_on(yellow);
 	   }
 	   else
 	   {
@@ -382,6 +384,7 @@ void DMA1_Stream1_IRQHandler(void)
 
    DMA_ClearFlag(DMA1_Stream1,DMA_FLAG_TCIF1);
    USART_DMACmd(USART3,USART_DMAReq_Rx,ENABLE);
+   GPIO_ResetBits(GPIOE,GPIO_Pin_0);
 
 }
 
@@ -408,6 +411,7 @@ void Read_data_IMU(int shift)
 	crc = (((unsigned short)RxMessageIMU[lenght+5-shift]<<8) |
 			(unsigned short)RxMessageIMU[lenght+1+5-shift]);                          // CRC extract
 
+//	if (lenght>500){led_on(red);}
 	if(crc == calcCRC(&RxMessageIMU[2-shift], lenght+3))                              // Crc test
 	{
 
@@ -436,6 +440,8 @@ void Read_data_IMU(int shift)
 			Sensor_val.gyro_x = -Sensor_val.gyro_x;
 			Sensor_val.theta_z = -Sensor_val.theta_z;           // Due to orientation AS prototype
 			Sensor_val.gyro_z = -Sensor_val.gyro_z;
+
+			GPIO_SetBits(GPIOE,GPIO_Pin_0);
 
 			IMU_data_for_PC = 1;
 //			if ((Sensor_val.theta_x <(0.2))&(Sensor_val.theta_x >(0)))
@@ -667,7 +673,7 @@ void Start_Continious_Mode_PC (void)
 /***************************************************************************/
 void DMA2_Stream6_IRQHandler(void)
 {
-	toggle_led(yellow);
+	//toggle_led(yellow);
 	//led_on(red);
 
 	//USART_DMACmd(USART6,USART_DMAReq_Tx,DISABLE);
@@ -941,7 +947,7 @@ void Send_Sensor_Values_to_HELIOS(unsigned char Anzahl)
     char *ptr_4 = (char*)&phi_dot.phi_x;
     char *ptr_6 = (char*)&Sensor_val.gyro_x;
     char *ptr_7 = (char*)&Sensor_val.psi_dot_1;
-    char *ptr_8 = (char*)&Sensor_val.current_EPOS1;//Motor_current_real.I_1;
+    char *ptr_8 = (char*)&Motor_current_real.I_1;
     char *ptr_9 = (char*)&Helios_val.position_x;
     char *ptr_10 = (char*)&Sensor_val.qW;
     char *ptr_11 = (char*)&Sensor_val.acc_x;
@@ -1014,109 +1020,6 @@ void Send_Sensor_Values_to_HELIOS(unsigned char Anzahl)
 
 
 
-/*========================================================================================*/
-/*==============================leds & delay==============================================*/
-/*========================================================================================*/
-void led_init(void)
-{
-	RCC_AHB1PeriphClockCmd (RCC_AHB1Periph_GPIOF,ENABLE);
-
-	//LEDS
-	GPIO_InitTypeDef a;
-	GPIO_InitTypeDef * GPIO_InitStruct;
-	GPIO_InitStruct = &a;
-
-	GPIO_InitStruct->GPIO_Pin = GPIO_Pin_7;// | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-	GPIO_InitStruct->GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct->GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStruct->GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct->GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOF,GPIO_InitStruct);
-
-	GPIO_InitStruct->GPIO_Pin = GPIO_Pin_8;// | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-	GPIO_InitStruct->GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct->GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStruct->GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct->GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOF,GPIO_InitStruct);
-
-
-	GPIO_InitStruct->GPIO_Pin = GPIO_Pin_9;// | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-	GPIO_InitStruct->GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct->GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStruct->GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct->GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOF,GPIO_InitStruct);
-
-	GPIO_InitStruct->GPIO_Pin = GPIO_Pin_6;// | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-	GPIO_InitStruct->GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct->GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStruct->GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct->GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOF,GPIO_InitStruct);
-}
-
-void led_on(Led_TypeDef led)
-{
-	if(led==red)
-	{
-		GPIO_SetBits(GPIOF,GPIO_Pin_8);
-	}
-	if(led==yellow)
-	{
-		GPIO_SetBits(GPIOF,GPIO_Pin_7);
-	}
-	if(led==green1)
-	{
-		GPIO_SetBits(GPIOF,GPIO_Pin_6);
-	}
-	if(led==green2)
-	{
-		GPIO_SetBits(GPIOF,GPIO_Pin_9);
-	}
-}
-
-
-
-void led_off(Led_TypeDef led)
-{
-	if(led==red)
-	{
-		GPIO_ResetBits(GPIOF,GPIO_Pin_8);
-	}
-	if(led==yellow)
-	{
-		GPIO_ResetBits(GPIOF,GPIO_Pin_7);
-	}
-	if(led==green1)
-	{
-		GPIO_ResetBits(GPIOF,GPIO_Pin_6);
-	}
-	if(led==green2)
-	{
-		GPIO_ResetBits(GPIOF,GPIO_Pin_9);
-	}
-}
-
-void toggle_led(Led_TypeDef led)
-{
-	if(led==red)
-	{
-		GPIO_ToggleBits(GPIOF,GPIO_Pin_8);
-	}
-	if(led==yellow)
-	{
-		GPIO_ToggleBits(GPIOF,GPIO_Pin_7);
-	}
-	if(led==green1)
-		{
-			GPIO_ToggleBits(GPIOF,GPIO_Pin_6);
-		}
-	if(led==green2)
-		{
-			GPIO_ToggleBits(GPIOF,GPIO_Pin_9);
-		}
-}
 
 /***************************************************************************/
 /* Bezeichnung  :   calcModulo256()                                        */
